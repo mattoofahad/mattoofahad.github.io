@@ -75,6 +75,12 @@ a {
   color: #ffffff;
 }
 
+p
+{
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 a {
   color: #1772d0;
   text-decoration: none;
