@@ -1,114 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FM — Photo Gallery</title>
   <link rel="shortcut icon" href="../images_/favicon_io/favicon.ico" type="image/x-icon">
-  <script src="../theme.js"></script>
+  <script>
+    (function(){
+      var t = localStorage.getItem('fm-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <style>
-    /* ── Theme Variables (synced with main site) ── */
-    :root,
-    [data-theme="dark"] {
-      --bg-primary: #0d0b1a;
-      --bg-secondary: #151228;
-      --bg-tertiary: #1e1a36;
-      --text-primary: #e8e4f0;
-      --text-secondary: #a89ec8;
-      --text-heading: #ffffff;
-      --accent-primary: #8b5cf6;
-      --accent-primary-hover: #a78bfa;
-      --accent-glow: rgba(139, 92, 246, 0.15);
-      --border-color: rgba(139, 92, 246, 0.2);
-      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    /* ── Tokens ── */
+    :root {
+      --c-bg: #09090b; --c-bg-alt: #18181b; --c-surface: #27272a;
+      --c-text: #fafafa; --c-text-dim: #a1a1aa; --c-text-faint: #71717a;
+      --c-accent: #818cf8; --c-accent-h: #a5b4fc;
+      --c-border: #27272a;
+      --shadow-md: 0 4px 12px rgba(0,0,0,.4);
     }
-
     [data-theme="light"] {
-      --bg-primary: #faf8ff;
-      --bg-secondary: #f0ecfa;
-      --bg-tertiary: #e8e2f4;
-      --text-primary: #2d2640;
-      --text-secondary: #6b5f8a;
-      --text-heading: #1a1430;
-      --accent-primary: #7c3aed;
-      --accent-primary-hover: #6d28d9;
-      --accent-glow: rgba(124, 58, 237, 0.08);
-      --border-color: rgba(124, 58, 237, 0.15);
-      --card-shadow: 0 2px 16px rgba(124, 58, 237, 0.08);
+      --c-bg: #ffffff; --c-bg-alt: #f4f4f5; --c-surface: #e4e4e7;
+      --c-text: #09090b; --c-text-dim: #52525b; --c-text-faint: #71717a;
+      --c-accent: #6366f1; --c-accent-h: #4f46e5;
+      --c-border: #e4e4e7;
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08);
     }
 
-    /* ── Theme transition ── */
-    html.theme-transition,
-    html.theme-transition *,
-    html.theme-transition *::before,
-    html.theme-transition *::after {
-      transition: background-color 0.3s ease, color 0.3s ease,
-                  border-color 0.3s ease, box-shadow 0.3s ease !important;
-    }
-
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg-primary);
-      font-family: 'Lato', Verdana, Helvetica, sans-serif;
-      color: var(--text-primary);
+      background: var(--c-bg);
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--c-text);
+      transition: background-color .25s ease, color .25s ease;
     }
 
-    /* ── Theme Toggle ── */
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid var(--border-color);
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 24px;
+      background: rgba(9,9,11,.75);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--c-border);
+      transition: background .25s, border-color .25s;
     }
+    [data-theme="light"] .topbar { background: rgba(255,255,255,.8); }
 
-    .theme-toggle:hover {
-      border-color: var(--accent-primary);
-      box-shadow: 0 0 16px var(--accent-glow);
+    .topbar h1 {
+      font-size: 1.4rem; font-weight: 900; letter-spacing: 1px;
     }
+    .topbar h1 span { font-weight: 400; color: var(--c-text-dim); }
 
-    /* ── Header ── */
-    .page-header {
-      text-align: center;
-      padding: 48px 20px 36px;
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .topbar a {
+      font-size: .85rem; font-weight: 700; color: var(--c-text-dim);
+      text-decoration: none; transition: color .15s;
     }
+    .topbar a:hover { color: var(--c-text); }
 
-    .page-header h1 {
-      font-size: 2.6rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      color: var(--text-heading);
-      border-bottom: 3px solid var(--accent-primary);
-      display: inline-block;
-      padding-bottom: 10px;
+    .theme-btn {
+      background: none; border: 2px solid var(--c-border); color: var(--c-text);
+      width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .15s, background .15s;
     }
+    .theme-btn:hover { border-color: var(--c-accent); background: var(--c-bg-alt); }
+    .theme-btn svg { width: 16px; height: 16px; }
 
-    .page-header h1 span {
-      font-weight: 400;
-    }
-
-    /* ── Masonry Grid ── */
+    /* ── Masonry ── */
     .gallery {
-      columns: 3 320px;
+      columns: 3 300px;
       column-gap: 14px;
-      padding: 0 20px 20px;
+      padding: 20px 20px 0;
       max-width: 1400px;
       margin: 0 auto;
     }
@@ -119,190 +85,95 @@
       cursor: pointer;
       overflow: hidden;
       border-radius: 8px;
-      position: relative;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--card-shadow);
-      background: var(--bg-tertiary);
+      border: 1px solid var(--c-border);
+      background: var(--c-bg-alt);
+      transition: border-color .15s, box-shadow .25s;
     }
+    .gallery-item:hover {
+      border-color: var(--c-accent);
+      box-shadow: var(--shadow-md);
+    }
+    .gallery-item:hover img { transform: scale(1.03); filter: brightness(.88); }
 
     .gallery-item img {
-      display: block;
-      width: 100%;
-      height: auto;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      content-visibility: auto;
-      contain-intrinsic-size: 320px 240px;
-    }
-
-    /* Fade-in on load */
-    .gallery-img {
+      display: block; width: 100%; height: auto;
+      transition: transform .3s ease, filter .3s ease, opacity .4s ease;
       opacity: 0;
-      transition: opacity 0.4s ease, transform 0.3s ease, filter 0.3s ease;
     }
-
-    .gallery-img.loaded {
-      opacity: 1;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.03);
-      filter: brightness(0.88);
-    }
+    .gallery-item img.loaded { opacity: 1; }
 
     /* ── Footer ── */
     .page-footer {
-      text-align: center;
-      padding: 40px 20px 60px;
+      text-align: center; padding: 40px 20px 60px;
     }
-
     .page-footer a {
-      display: inline-block;
-      background: var(--accent-primary);
-      color: #fff;
-      text-decoration: none;
-      padding: 12px 36px;
-      border-radius: 8px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      font-size: 1rem;
-      transition: background 0.2s ease;
+      display: inline-block; background: var(--c-accent); color: #fff;
+      text-decoration: none; padding: 10px 32px; border-radius: 8px;
+      font-weight: 700; letter-spacing: 2px; font-size: .9rem;
+      transition: background .15s;
     }
-
-    .page-footer a:hover {
-      background: var(--accent-primary-hover);
-    }
+    .page-footer a:hover { background: var(--c-accent-h); }
 
     /* ── Lightbox ── */
     #lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.92);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.94); z-index: 1000;
+      align-items: center; justify-content: center; flex-direction: column;
     }
-
-    #lightbox.open {
-      display: flex;
-    }
+    #lightbox.open { display: flex; }
 
     #lb-img-wrap {
-      position: relative;
-      max-width: 90vw;
-      max-height: 82vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      position: relative; max-width: 90vw; max-height: 82vh;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-
     #lb-img {
-      max-width: 90vw;
-      max-height: 82vh;
-      object-fit: contain;
-      display: block;
-      transform-origin: center center;
-      transition: transform 0.25s ease;
-      user-select: none;
+      max-width: 90vw; max-height: 82vh; object-fit: contain; display: block;
+      transform-origin: center center; transition: transform .25s ease; user-select: none;
     }
 
     #lb-counter {
-      color: rgba(255,255,255,0.55);
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      margin-top: 10px;
+      color: rgba(255,255,255,.5); font-size: .85rem; letter-spacing: 2px; margin-top: 10px;
     }
-
     #lb-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 14px;
+      display: flex; align-items: center; gap: 8px; margin-top: 14px;
     }
-
     .lb-btn {
-      background: rgba(139, 92, 246, 0.2);
-      border: none;
-      color: #fff;
-      font-size: 1.2rem;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s ease;
-      outline: none;
+      background: rgba(255,255,255,.1); border: none; color: #fff;
+      font-size: 1.2rem; width: 42px; height: 42px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s; outline: none;
     }
+    .lb-btn:hover { background: rgba(255,255,255,.25); }
 
-    .lb-btn:hover {
-      background: rgba(139, 92, 246, 0.4);
+    #lb-prev, #lb-next {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.08); border: none; color: #fff;
+      font-size: 2rem; width: 52px; height: 72px; border-radius: 6px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s; outline: none; z-index: 1010;
     }
-
-    #lb-prev,
-    #lb-next {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(139, 92, 246, 0.15);
-      border: none;
-      color: #fff;
-      font-size: 2rem;
-      width: 52px;
-      height: 72px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s ease;
-      outline: none;
-      z-index: 1010;
-    }
-
     #lb-prev { left: 10px; }
     #lb-next { right: 10px; }
-
-    #lb-prev:hover,
-    #lb-next:hover {
-      background: rgba(139, 92, 246, 0.35);
-    }
+    #lb-prev:hover, #lb-next:hover { background: rgba(255,255,255,.2); }
 
     #lb-close {
-      position: fixed;
-      top: 16px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 2rem;
-      cursor: pointer;
-      line-height: 1;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-      z-index: 1010;
+      position: fixed; top: 16px; right: 20px; background: none; border: none;
+      color: #fff; font-size: 2rem; cursor: pointer; line-height: 1;
+      opacity: .7; transition: opacity .2s; z-index: 1010;
     }
-
     #lb-close:hover { opacity: 1; }
 
     #lb-zoom-label {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.8rem;
-      letter-spacing: 1px;
-      min-width: 48px;
-      text-align: center;
+      color: rgba(255,255,255,.5); font-size: .8rem; letter-spacing: 1px;
+      min-width: 48px; text-align: center;
     }
 
     @media (max-width: 700px) {
-      .gallery { columns: 2 140px; }
+      .gallery { columns: 2 140px; column-gap: 10px; padding: 14px 14px 0; }
+      .gallery-item { margin-bottom: 10px; }
       #lb-prev { left: 4px; }
       #lb-next { right: 4px; }
-      .theme-toggle { top: 12px; right: 12px; }
     }
-
     @media (max-width: 400px) {
       .gallery { columns: 1; }
     }
@@ -310,11 +181,13 @@
 </head>
 <body>
 
-  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
-
-  <header class="page-header">
+  <div class="topbar">
     <h1>Photo <span>Gallery</span></h1>
-  </header>
+    <div class="topbar-right">
+      <a href="../index.html">Home</a>
+      <button class="theme-btn" id="theme-toggle" aria-label="Toggle theme"></button>
+    </div>
+  </div>
 
   <main class="gallery" id="gallery"></main>
 
@@ -326,197 +199,164 @@
   <div id="lightbox" role="dialog" aria-modal="true">
     <button id="lb-close" aria-label="Close">&times;</button>
     <button id="lb-prev" aria-label="Previous image">&#8249;</button>
-
     <div id="lb-img-wrap">
       <img id="lb-img" src="" alt="Gallery photo">
     </div>
-
     <div id="lb-counter"></div>
-
     <div id="lb-controls">
       <button class="lb-btn" id="lb-zoom-out" aria-label="Zoom out">&#8722;</button>
       <span id="lb-zoom-label">100%</span>
       <button class="lb-btn" id="lb-zoom-in" aria-label="Zoom in">&#43;</button>
-      <button class="lb-btn" id="lb-zoom-reset" aria-label="Reset zoom" title="Reset zoom">&#8634;</button>
-      <button class="lb-btn" id="lb-download" aria-label="Download image" title="Download">&#8595;</button>
+      <button class="lb-btn" id="lb-zoom-reset" aria-label="Reset zoom" title="Reset">&#8634;</button>
+      <button class="lb-btn" id="lb-download" aria-label="Download" title="Download">&#8595;</button>
     </div>
-
     <button id="lb-next" aria-label="Next image">&#8250;</button>
   </div>
 
   <script>
-    // ── Image list ──────────────────────────────────────────────────────────
-    var H = function(n) { return 'images_/photos/horizontal/image (' + n + ').jpg'; };
-    var V = function(n) { return 'images_/photos/vertical/image (' + n + ').jpg'; };
-
-    var images = [
-      // — original photo.html block 1 —
-      H(1), H(2), H(3), V(1), H(4), V(2), V(3), V(4),
-      // — original photo.html block 2 —
-      V(5), V(6), H(5), V(7), H(6), V(8), H(7), H(8),
-      // — original photo.html block 3 —
-      V(9), H(9), V(11), V(10), H(10), H(11), H(12), V(12),
-      // — original photo_more.html block 1 —
-      H(13), V(13), V(14), H(14), H(15), V(15), V(16), V(17),
-      V(18), V(19), V(20), H(16), V(21), V(22), V(23), V(24),
-      H(17), H(18), H(19), V(25), V(26), V(27), V(28), V(29),
-      V(30), V(31), H(20),
-      // — original photo_more.html block 2 —
-      V(34), V(35), H(21), H(22), H(23), H(24), V(36), V(37),
-      V(38), V(39), V(40), V(41), V(42), V(43), H(25), V(44),
-      V(45), V(46), V(47), H(26), V(48), V(49), H(27), V(50),
-      V(51), V(52), H(28),
-      // — original photo_more.html block 3 —
-      H(29), V(53), V(54), H(30), H(31), V(55), H(32), V(56),
-      V(57), V(58), H(33), V(59), V(60), H(34), V(61), V(62),
-      V(63), V(64), H(35), V(65), V(66), H(36), V(67), V(68),
-      V(70), V(32), V(33),
-      // — extras —
-      H(37), H(38), V(69)
-    ];
-
-    // ── Build grid with lazy loading ────────────────────────────────────────
-    var gallery = document.getElementById('gallery');
-
-    images.forEach(function(src, idx) {
-      var item = document.createElement('div');
-      item.className = 'gallery-item';
-      item.dataset.index = idx;
-
-      var img = document.createElement('img');
-      img.dataset.src = src;
-      img.alt = 'Photo ' + (idx + 1);
-      img.className = 'gallery-img';
-      img.style.minHeight = '180px';
-
-      item.appendChild(img);
-      item.addEventListener('click', function() { openLightbox(idx); });
-      gallery.appendChild(item);
+  // ── Theme Toggle ──────────────────────────────────────────────────────────
+  (function() {
+    var SUNSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var MOONSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    var btn = document.getElementById('theme-toggle');
+    function getTheme() { return document.documentElement.getAttribute('data-theme') || 'dark'; }
+    function render() {
+      var th = getTheme();
+      btn.innerHTML = th === 'dark' ? SUNSVG : MOONSVG;
+    }
+    btn.addEventListener('click', function() {
+      var next = getTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('fm-theme', next);
+      render();
     });
+    render();
+  })();
 
-    // ── IntersectionObserver lazy loading ────────────────────────────────────
-    if ('IntersectionObserver' in window) {
-      var lazyObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            var img = entry.target;
-            img.src = img.dataset.src;
-            img.onload = function() {
-              img.style.minHeight = '';
-              img.classList.add('loaded');
-            };
-            lazyObserver.unobserve(img);
-          }
-        });
-      }, {
-        rootMargin: '200px 0px',
-        threshold: 0.01
+  // ── Image list ────────────────────────────────────────────────────────────
+  var H = function(n) { return 'images_/photos/horizontal/image (' + n + ').jpg'; };
+  var V = function(n) { return 'images_/photos/vertical/image (' + n + ').jpg'; };
+
+  var images = [
+    H(1), H(2), H(3), V(1), H(4), V(2), V(3), V(4),
+    V(5), V(6), H(5), V(7), H(6), V(8), H(7), H(8),
+    V(9), H(9), V(11), V(10), H(10), H(11), H(12), V(12),
+    H(13), V(13), V(14), H(14), H(15), V(15), V(16), V(17),
+    V(18), V(19), V(20), H(16), V(21), V(22), V(23), V(24),
+    H(17), H(18), H(19), V(25), V(26), V(27), V(28), V(29),
+    V(30), V(31), H(20),
+    V(34), V(35), H(21), H(22), H(23), H(24), V(36), V(37),
+    V(38), V(39), V(40), V(41), V(42), V(43), H(25), V(44),
+    V(45), V(46), V(47), H(26), V(48), V(49), H(27), V(50),
+    V(51), V(52), H(28),
+    H(29), V(53), V(54), H(30), H(31), V(55), H(32), V(56),
+    V(57), V(58), H(33), V(59), V(60), H(34), V(61), V(62),
+    V(63), V(64), H(35), V(65), V(66), H(36), V(67), V(68),
+    V(70), V(32), V(33),
+    H(37), H(38), V(69)
+  ];
+
+  // ── Build grid with IntersectionObserver lazy load ────────────────────────
+  var gallery = document.getElementById('gallery');
+
+  images.forEach(function(src, idx) {
+    var item = document.createElement('div');
+    item.className = 'gallery-item';
+
+    var img = document.createElement('img');
+    img.dataset.src = src;
+    img.alt = 'Photo ' + (idx + 1);
+    img.style.minHeight = '160px';
+
+    item.appendChild(img);
+    item.addEventListener('click', function() { openLightbox(idx); });
+    gallery.appendChild(item);
+  });
+
+  if ('IntersectionObserver' in window) {
+    var lazyObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var img = entry.target;
+          img.src = img.dataset.src;
+          img.onload = function() { img.style.minHeight = ''; img.classList.add('loaded'); };
+          lazyObs.unobserve(img);
+        }
       });
-
-      document.querySelectorAll('.gallery-img').forEach(function(img) {
-        lazyObserver.observe(img);
-      });
-    } else {
-      // Fallback: load all immediately
-      document.querySelectorAll('.gallery-img').forEach(function(img) {
-        img.src = img.dataset.src;
-        img.classList.add('loaded');
-      });
-    }
-
-    // ── Lightbox state ──────────────────────────────────────────────────────
-    var lb          = document.getElementById('lightbox');
-    var lbImg       = document.getElementById('lb-img');
-    var lbCounter   = document.getElementById('lb-counter');
-    var lbZoomLabel = document.getElementById('lb-zoom-label');
-
-    var currentIdx = 0;
-    var zoomLevel  = 1;
-    var ZOOM_STEP = 0.25;
-    var ZOOM_MIN  = 0.5;
-    var ZOOM_MAX  = 4;
-
-    function preloadAdjacent() {
-      var prevIdx = (currentIdx - 1 + images.length) % images.length;
-      var nextIdx = (currentIdx + 1) % images.length;
-      new Image().src = images[prevIdx];
-      new Image().src = images[nextIdx];
-    }
-
-    function openLightbox(idx) {
-      currentIdx = idx;
-      zoomLevel = 1;
-      updateLbImage();
-      lb.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      lb.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    function updateLbImage() {
-      lbImg.src = images[currentIdx];
-      lbCounter.textContent = (currentIdx + 1) + ' / ' + images.length;
-      applyZoom();
-      preloadAdjacent();
-    }
-
-    function navigate(delta) {
-      currentIdx = (currentIdx + delta + images.length) % images.length;
-      zoomLevel = 1;
-      updateLbImage();
-    }
-
-    function applyZoom() {
-      lbImg.style.transform = 'scale(' + zoomLevel + ')';
-      lbZoomLabel.textContent = Math.round(zoomLevel * 100) + '%';
-    }
-
-    function zoomIn()    { zoomLevel = Math.min(ZOOM_MAX, zoomLevel + ZOOM_STEP); applyZoom(); }
-    function zoomOut()   { zoomLevel = Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP); applyZoom(); }
-    function zoomReset() { zoomLevel = 1; applyZoom(); }
-
-    // ── Button wiring ───────────────────────────────────────────────────────
-    document.getElementById('lb-close').addEventListener('click', closeLightbox);
-    document.getElementById('lb-prev').addEventListener('click', function() { navigate(-1); });
-    document.getElementById('lb-next').addEventListener('click', function() { navigate(1); });
-    document.getElementById('lb-zoom-in').addEventListener('click', zoomIn);
-    document.getElementById('lb-zoom-out').addEventListener('click', zoomOut);
-    document.getElementById('lb-zoom-reset').addEventListener('click', zoomReset);
-    document.getElementById('lb-download').addEventListener('click', function() {
-      var src = images[currentIdx];
-      var a = document.createElement('a');
-      a.href = src;
-      a.download = src.split('/').pop();
-      a.click();
+    }, { rootMargin: '300px 0px', threshold: 0.01 });
+    document.querySelectorAll('.gallery-item img').forEach(function(img) { lazyObs.observe(img); });
+  } else {
+    document.querySelectorAll('.gallery-item img').forEach(function(img) {
+      img.src = img.dataset.src; img.classList.add('loaded');
     });
+  }
 
-    // Click backdrop to close (but not the image)
-    lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+  // ── Lightbox ──────────────────────────────────────────────────────────────
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var lbCounter = document.getElementById('lb-counter');
+  var lbZoomLabel = document.getElementById('lb-zoom-label');
+  var currentIdx = 0, zoomLevel = 1;
+  var ZOOM_STEP = 0.25, ZOOM_MIN = 0.5, ZOOM_MAX = 4;
 
-    // ── Keyboard ────────────────────────────────────────────────────────────
-    document.addEventListener('keydown', function(e) {
-      if (!lb.classList.contains('open')) return;
-      switch (e.key) {
-        case 'Escape':      closeLightbox();  break;
-        case 'ArrowLeft':   navigate(-1);     break;
-        case 'ArrowRight':  navigate(1);      break;
-        case '+':
-        case '=':           zoomIn();         break;
-        case '-':           zoomOut();        break;
-        case '0':           zoomReset();      break;
-      }
-    });
+  function preloadAdjacent() {
+    new Image().src = images[(currentIdx - 1 + images.length) % images.length];
+    new Image().src = images[(currentIdx + 1) % images.length];
+  }
 
-    // ── Swipe support (touch) ───────────────────────────────────────────────
-    var touchStartX = 0;
-    lb.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
-    lb.addEventListener('touchend', function(e) {
-      var dx = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
-    });
+  function openLightbox(idx) {
+    currentIdx = idx; zoomLevel = 1; updateLb();
+    lb.classList.add('open'); document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lb.classList.remove('open'); document.body.style.overflow = '';
+  }
+  function updateLb() {
+    lbImg.src = images[currentIdx];
+    lbCounter.textContent = (currentIdx + 1) + ' / ' + images.length;
+    applyZoom(); preloadAdjacent();
+  }
+  function navigate(d) {
+    currentIdx = (currentIdx + d + images.length) % images.length;
+    zoomLevel = 1; updateLb();
+  }
+  function applyZoom() {
+    lbImg.style.transform = 'scale(' + zoomLevel + ')';
+    lbZoomLabel.textContent = Math.round(zoomLevel * 100) + '%';
+  }
+  function zoomIn()  { zoomLevel = Math.min(ZOOM_MAX, zoomLevel + ZOOM_STEP); applyZoom(); }
+  function zoomOut() { zoomLevel = Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP); applyZoom(); }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', function() { navigate(-1); });
+  document.getElementById('lb-next').addEventListener('click', function() { navigate(1); });
+  document.getElementById('lb-zoom-in').addEventListener('click', zoomIn);
+  document.getElementById('lb-zoom-out').addEventListener('click', zoomOut);
+  document.getElementById('lb-zoom-reset').addEventListener('click', function() { zoomLevel = 1; applyZoom(); });
+  document.getElementById('lb-download').addEventListener('click', function() {
+    var a = document.createElement('a'); a.href = images[currentIdx];
+    a.download = images[currentIdx].split('/').pop(); a.click();
+  });
+  lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+
+  document.addEventListener('keydown', function(e) {
+    if (!lb.classList.contains('open')) return;
+    switch(e.key) {
+      case 'Escape':    closeLightbox(); break;
+      case 'ArrowLeft': navigate(-1); break;
+      case 'ArrowRight':navigate(1); break;
+      case '+': case '=': zoomIn(); break;
+      case '-': zoomOut(); break;
+      case '0': zoomLevel = 1; applyZoom(); break;
+    }
+  });
+
+  var touchStartX = 0;
+  lb.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+  });
   </script>
 </body>
 </html>
