@@ -1,73 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- <meta charset="UTF-8"> -->
-    <title>FM (Photo Gallery)</title>
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-    <!-- <title>My Website</title> -->
-    <link rel="stylesheet" href="./style_photos.css">
-    <link rel="shortcut icon" href="images_/favicon_io/favicon.ico" type="image/x-icon">
-  </head>
-  <body>
-    <div class="container">
-      <div class="heading">
-        <h3>Photo 
-          <span>Gallery</span></h3>
-      </div>
-      <div class="box">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FM — Photo Gallery</title>
+  <link rel="shortcut icon" href="images_/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        <div class="dream">
-          <img src="images_\photos\horizontal\image (1).jpg">
-          <img src="images_\photos\horizontal\image (2).jpg">
+    body {
+      background: #f4f4f2;
+      font-family: 'Lato', Verdana, Helvetica, sans-serif;
+      color: #222;
+    }
 
-          <img src="images_\photos\horizontal\image (3).jpg">
-          <img src="images_\photos\vertical\image (1).jpg">
+    /* ── Header ── */
+    .page-header {
+      text-align: center;
+      padding: 48px 20px 36px;
+    }
 
-          <img src="images_\photos\horizontal\image (4).jpg">
-          <img src="images_\photos\vertical\image (2).jpg">
+    .page-header h1 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      border-bottom: 3px solid #222;
+      display: inline-block;
+      padding-bottom: 10px;
+    }
 
-          <img src="images_\photos\vertical\image (3).jpg">
-          <img src="images_\photos\vertical\image (4).jpg">
+    .page-header h1 span {
+      font-weight: 400;
+    }
 
-        </div>
+    /* ── Masonry Grid ── */
+    .gallery {
+      columns: 3 320px;
+      column-gap: 12px;
+      padding: 0 20px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
-        <div class="dream">
-          <img src="images_\photos\vertical\image (5).jpg">
-          <img src="images_\photos\vertical\image (6).jpg">
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+    }
 
-          <img src="images_\photos\horizontal\image (5).jpg">
-          <img src="images_\photos\vertical\image (7).jpg">
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
 
-          <img src="images_\photos\horizontal\image (6).jpg">
-          <img src="images_\photos\vertical\image (8).jpg">
+    .gallery-item:hover img {
+      transform: scale(1.03);
+      filter: brightness(0.88);
+    }
 
-          <img src="images_\photos\horizontal\image (7).jpg">
-          <img src="images_\photos\horizontal\image (8).jpg">
+    /* ── Footer ── */
+    .page-footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+    }
 
-        </div>
+    .page-footer a {
+      display: inline-block;
+      background: #222;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 36px;
+      border-radius: 4px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
 
-        <div class="dream">
-          <img src="images_\photos\vertical\image (9).jpg">
-          <img src="images_\photos\horizontal\image (9).jpg">
+    .page-footer a:hover {
+      background: #444;
+    }
 
-          <img src="images_\photos\vertical\image (11).jpg">
-          <img src="images_\photos\vertical\image (10).jpg">
+    /* ── Lightbox ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
 
-          <img src="images_\photos\horizontal\image (10).jpg">
+    #lightbox.open {
+      display: flex;
+    }
 
-          <img src="images_\photos\horizontal\image (11).jpg">
-          <img src="images_\photos\horizontal\image (12).jpg">
-          <img src="images_\photos\vertical\image (12).jpg">
+    /* Image wrapper — handles zoom via CSS transform */
+    #lb-img-wrap {
+      position: relative;
+      max-width: 90vw;
+      max-height: 82vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
+    #lb-img {
+      max-width: 90vw;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+      transform-origin: center center;
+      transition: transform 0.25s ease;
+      user-select: none;
+    }
 
-        </div>
+    /* Counter label */
+    #lb-counter {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
 
-      </div>
-      <div class="button">
-        <a href="photo_more.html">More</a><a>     |     </a><a href="../index.html">Home</a>
-      </div>
+    /* Controls bar */
+    #lb-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .lb-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      outline: none;
+    }
+
+    .lb-btn:hover {
+      background: rgba(255,255,255,0.28);
+    }
+
+    /* Prev / Next — positioned on the sides */
+    #lb-prev,
+    #lb-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.10);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      width: 52px;
+      height: 72px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      outline: none;
+      z-index: 1010;
+    }
+
+    #lb-prev { left: 10px; }
+    #lb-next { right: 10px; }
+
+    #lb-prev:hover,
+    #lb-next:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Close button */
+    #lb-close {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      z-index: 1010;
+    }
+
+    #lb-close:hover { opacity: 1; }
+
+    /* Zoom level badge */
+    #lb-zoom-label {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      min-width: 48px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .gallery { columns: 2 140px; }
+      #lb-prev { left: 4px; }
+      #lb-next { right: 4px; }
+    }
+
+    @media (max-width: 400px) {
+      .gallery { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <h1>Photo <span>Gallery</span></h1>
+  </header>
+
+  <main class="gallery" id="gallery"></main>
+
+  <footer class="page-footer">
+    <a href="../index.html">Home</a>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" role="dialog" aria-modal="true">
+    <button id="lb-close" aria-label="Close">&times;</button>
+    <button id="lb-prev" aria-label="Previous image">&#8249;</button>
+
+    <div id="lb-img-wrap">
+      <img id="lb-img" src="" alt="Gallery photo">
     </div>
 
-  </body>
+    <div id="lb-counter"></div>
+
+    <div id="lb-controls">
+      <button class="lb-btn" id="lb-zoom-out" aria-label="Zoom out">&#8722;</button>
+      <span id="lb-zoom-label">100%</span>
+      <button class="lb-btn" id="lb-zoom-in" aria-label="Zoom in">&#43;</button>
+      <button class="lb-btn" id="lb-zoom-reset" aria-label="Reset zoom" title="Reset zoom">&#8634;</button>
+    </div>
+
+    <button id="lb-next" aria-label="Next image">&#8250;</button>
+  </div>
+
+  <script>
+    // ── Image list (all photos from both original pages) ──────────────────────
+    const H = n => `images_/photos/horizontal/image (${n}).jpg`;
+    const V = n => `images_/photos/vertical/image (${n}).jpg`;
+
+    const images = [
+      // — original photo.html block 1 —
+      H(1), H(2), H(3), V(1), H(4), V(2), V(3), V(4),
+      // — original photo.html block 2 —
+      V(5), V(6), H(5), V(7), H(6), V(8), H(7), H(8),
+      // — original photo.html block 3 —
+      V(9), H(9), V(11), V(10), H(10), H(11), H(12), V(12),
+      // — original photo_more.html block 1 —
+      H(13), V(13), V(14), H(14), H(15), V(15), V(16), V(17),
+      V(18), V(19), V(20), H(16), V(21), V(22), V(23), V(24),
+      H(17), H(18), H(19), V(25), V(26), V(27), V(28), V(29),
+      V(30), V(31), H(20),
+      // — original photo_more.html block 2 —
+      V(34), V(35), H(21), H(22), H(23), H(24), V(36), V(37),
+      V(38), V(39), V(40), V(41), V(42), V(43), H(25), V(44),
+      V(45), V(46), V(47), H(26), V(48), V(49), H(27), V(50),
+      V(51), V(52), H(28),
+      // — original photo_more.html block 3 —
+      H(29), V(53), V(54), H(30), H(31), V(55), H(32), V(56),
+      V(57), V(58), H(33), V(59), V(60), H(34), V(61), V(62),
+      V(63), V(64), H(35), V(65), V(66), H(36), V(67), V(68),
+      V(70), V(32), V(33),
+      // — extras available in folder but not in original pages —
+      H(37), H(38), V(69),
+    ];
+
+    // ── Build grid ────────────────────────────────────────────────────────────
+    const gallery = document.getElementById('gallery');
+
+    images.forEach((src, idx) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.dataset.index = idx;
+
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Photo ${idx + 1}`;
+      img.loading = 'lazy';
+
+      item.appendChild(img);
+      item.addEventListener('click', () => openLightbox(idx));
+      gallery.appendChild(item);
+    });
+
+    // ── Lightbox state ────────────────────────────────────────────────────────
+    const lb          = document.getElementById('lightbox');
+    const lbImg       = document.getElementById('lb-img');
+    const lbCounter   = document.getElementById('lb-counter');
+    const lbZoomLabel = document.getElementById('lb-zoom-label');
+
+    let currentIdx = 0;
+    let zoomLevel  = 1;
+    const ZOOM_STEP = 0.25;
+    const ZOOM_MIN  = 0.5;
+    const ZOOM_MAX  = 4;
+
+    function openLightbox(idx) {
+      currentIdx = idx;
+      zoomLevel = 1;
+      updateLbImage();
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function updateLbImage() {
+      lbImg.src = images[currentIdx];
+      lbCounter.textContent = `${currentIdx + 1} / ${images.length}`;
+      applyZoom();
+    }
+
+    function navigate(delta) {
+      currentIdx = (currentIdx + delta + images.length) % images.length;
+      zoomLevel = 1;
+      updateLbImage();
+    }
+
+    function applyZoom() {
+      lbImg.style.transform = `scale(${zoomLevel})`;
+      lbZoomLabel.textContent = Math.round(zoomLevel * 100) + '%';
+    }
+
+    function zoomIn()    { zoomLevel = Math.min(ZOOM_MAX, zoomLevel + ZOOM_STEP); applyZoom(); }
+    function zoomOut()   { zoomLevel = Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP); applyZoom(); }
+    function zoomReset() { zoomLevel = 1; applyZoom(); }
+
+    // ── Button wiring ─────────────────────────────────────────────────────────
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+    document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
+    document.getElementById('lb-next').addEventListener('click', () => navigate(1));
+    document.getElementById('lb-zoom-in').addEventListener('click', zoomIn);
+    document.getElementById('lb-zoom-out').addEventListener('click', zoomOut);
+    document.getElementById('lb-zoom-reset').addEventListener('click', zoomReset);
+
+    // Click backdrop to close (but not the image)
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+    // ── Keyboard ──────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      switch (e.key) {
+        case 'Escape':      closeLightbox();  break;
+        case 'ArrowLeft':   navigate(-1);     break;
+        case 'ArrowRight':  navigate(1);      break;
+        case '+':
+        case '=':           zoomIn();         break;
+        case '-':           zoomOut();        break;
+        case '0':           zoomReset();      break;
+      }
+    });
+
+    // ── Swipe support (touch) ─────────────────────────────────────────────────
+    let touchStartX = 0;
+    lb.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+    });
+  </script>
+</body>
 </html>
