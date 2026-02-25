@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#f0f8ff" rx="8"/>
+  <!-- Globe / Web icon -->
+  <circle cx="45" cy="55" r="32" fill="none" stroke="#3498db" stroke-width="2"/>
+  <ellipse cx="45" cy="55" rx="16" ry="32" fill="none" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="13" y1="55" x2="77" y2="55" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="16" y1="38" x2="74" y2="38" stroke="#3498db" stroke-width="1"/>
+  <line x1="16" y1="72" x2="74" y2="72" stroke="#3498db" stroke-width="1"/>
+  <!-- Arrow -->
+  <line x1="82" y1="55" x2="98" y2="55" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <!-- Chat bubble with RAG -->
+  <rect x="102" y="35" width="50" height="40" fill="#3498db" rx="8"/>
+  <polygon points="115,75 102,88 135,75" fill="#3498db"/>
+  <text x="127" y="51" text-anchor="middle" font-size="9" fill="white" font-family="Arial" font-weight="bold">RAG</text>
+  <text x="127" y="63" text-anchor="middle" font-size="8" fill="white" font-family="Arial">+GPT</text>
+</svg>

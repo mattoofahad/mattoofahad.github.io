@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#f0fff8" rx="8"/>
+  <!-- Multiple user icons -->
+  <circle cx="28" cy="30" r="12" fill="#27ae60"/>
+  <rect x="16" y="45" width="24" height="20" fill="#27ae60" rx="4"/>
+  <circle cx="60" cy="30" r="12" fill="#2ecc71"/>
+  <rect x="48" y="45" width="24" height="20" fill="#2ecc71" rx="4"/>
+  <circle cx="92" cy="30" r="12" fill="#27ae60"/>
+  <rect x="80" y="45" width="24" height="20" fill="#27ae60" rx="4"/>
+  <!-- Arrows to central RAG -->
+  <line x1="28" y1="65" x2="115" y2="85" stroke="#555" stroke-width="1.5"/>
+  <line x1="60" y1="65" x2="115" y2="85" stroke="#555" stroke-width="1.5"/>
+  <line x1="92" y1="65" x2="115" y2="85" stroke="#555" stroke-width="1.5"/>
+  <!-- RAG box -->
+  <rect x="108" y="78" width="44" height="32" fill="#27ae60" rx="6"/>
+  <text x="130" y="92" text-anchor="middle" font-size="9" fill="white" font-family="Arial" font-weight="bold">Multi</text>
+  <text x="130" y="104" text-anchor="middle" font-size="9" fill="white" font-family="Arial" font-weight="bold">RAG</text>
+  <!-- Document icon -->
+  <rect x="10" y="90" width="28" height="24" fill="#1abc9c" rx="3"/>
+  <line x1="14" y1="98" x2="34" y2="98" stroke="white" stroke-width="1.5"/>
+  <line x1="14" y1="104" x2="34" y2="104" stroke="white" stroke-width="1.5"/>
+  <line x1="14" y1="110" x2="26" y2="110" stroke="white" stroke-width="1.5"/>
+</svg>

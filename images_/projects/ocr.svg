@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#f8f8f8" rx="8"/>
+  <!-- Document page -->
+  <rect x="15" y="10" width="75" height="100" fill="white" stroke="#bbb" stroke-width="1.5" rx="3"/>
+  <!-- Scan lines on document (text-like) -->
+  <line x1="22" y1="28" x2="82" y2="28" stroke="#ccc" stroke-width="2"/>
+  <line x1="22" y1="38" x2="82" y2="38" stroke="#ccc" stroke-width="2"/>
+  <line x1="22" y1="48" x2="82" y2="48" stroke="#ccc" stroke-width="2"/>
+  <line x1="22" y1="58" x2="65" y2="58" stroke="#ccc" stroke-width="2"/>
+  <line x1="22" y1="72" x2="82" y2="72" stroke="#ccc" stroke-width="2"/>
+  <line x1="22" y1="82" x2="82" y2="82" stroke="#ccc" stroke-width="2"/>
+  <line x1="22" y1="92" x2="60" y2="92" stroke="#ccc" stroke-width="2"/>
+  <!-- Scanning laser line -->
+  <line x1="15" y1="55" x2="90" y2="55" stroke="#e74c3c" stroke-width="2" opacity="0.8"/>
+  <!-- Arrow -->
+  <line x1="95" y1="55" x2="112" y2="55" stroke="#555" stroke-width="2.5"/>
+  <polygon points="112,50 122,55 112,60" fill="#555"/>
+  <!-- Output text box -->
+  <rect x="118" y="30" width="36" height="60" fill="#2c3e50" rx="4"/>
+  <text x="136" y="48" text-anchor="middle" font-size="7" fill="#2ecc71" font-family="monospace">ABC</text>
+  <text x="136" y="60" text-anchor="middle" font-size="7" fill="#2ecc71" font-family="monospace">123</text>
+  <text x="136" y="72" text-anchor="middle" font-size="7" fill="#2ecc71" font-family="monospace">xyz</text>
+  <!-- OCR label -->
+  <rect x="15" y="8" width="30" height="14" fill="#e74c3c" rx="3"/>
+  <text x="30" y="19" text-anchor="middle" font-size="9" fill="white" font-family="Arial" font-weight="bold">OCR</text>
+</svg>

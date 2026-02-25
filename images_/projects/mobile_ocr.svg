@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#f8f8ff" rx="8"/>
+  <!-- Phone outline -->
+  <rect x="45" y="5" width="70" height="110" fill="#2c3e50" rx="10"/>
+  <rect x="50" y="18" width="60" height="80" fill="#ecf0f1" rx="4"/>
+  <!-- Camera notch -->
+  <rect x="70" y="8" width="20" height="8" fill="#1a252f" rx="4"/>
+  <!-- Home button -->
+  <circle cx="80" cy="108" r="4" fill="#7f8c8d"/>
+  <!-- Document inside phone screen -->
+  <rect x="55" y="24" width="50" height="68" fill="white" stroke="#bbb" stroke-width="1" rx="2"/>
+  <!-- Text lines on document in screen -->
+  <line x1="60" y1="34" x2="100" y2="34" stroke="#bbb" stroke-width="1.5"/>
+  <line x1="60" y1="42" x2="100" y2="42" stroke="#bbb" stroke-width="1.5"/>
+  <line x1="60" y1="50" x2="90" y2="50" stroke="#bbb" stroke-width="1.5"/>
+  <!-- Scanning highlight -->
+  <rect x="55" y="58" width="50" height="12" fill="#e74c3c" opacity="0.25" rx="2"/>
+  <line x1="55" y1="64" x2="105" y2="64" stroke="#e74c3c" stroke-width="1.5"/>
+  <!-- Text lines below scan -->
+  <line x1="60" y1="78" x2="100" y2="78" stroke="#bbb" stroke-width="1.5"/>
+  <line x1="60" y1="86" x2="85" y2="86" stroke="#bbb" stroke-width="1.5"/>
+  <!-- OCR label badge -->
+  <rect x="2" y="50" width="40" height="20" fill="#e74c3c" rx="6"/>
+  <text x="22" y="64" text-anchor="middle" font-size="10" fill="white" font-family="Arial" font-weight="bold">OCR</text>
+  <!-- Arrow from badge to phone -->
+  <line x1="42" y1="60" x2="54" y2="60" stroke="#e74c3c" stroke-width="2"/>
+  <polygon points="50,56 56,60 50,64" fill="#e74c3c"/>
+</svg>

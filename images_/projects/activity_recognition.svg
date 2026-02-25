@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#fff5f0" rx="8"/>
+  <!-- Stick figure (skeleton) in motion -->
+  <!-- Head -->
+  <circle cx="55" cy="18" r="10" fill="none" stroke="#e74c3c" stroke-width="2"/>
+  <!-- Spine -->
+  <line x1="55" y1="28" x2="55" y2="62" stroke="#e74c3c" stroke-width="2"/>
+  <!-- Arms - raised (activity) -->
+  <line x1="55" y1="40" x2="30" y2="28" stroke="#e74c3c" stroke-width="2"/>
+  <line x1="55" y1="40" x2="80" y2="30" stroke="#e74c3c" stroke-width="2"/>
+  <!-- Legs - in stride -->
+  <line x1="55" y1="62" x2="35" y2="90" stroke="#e74c3c" stroke-width="2"/>
+  <line x1="55" y1="62" x2="72" y2="88" stroke="#e74c3c" stroke-width="2"/>
+  <!-- Skeleton joints -->
+  <circle cx="30" cy="28" r="3" fill="#e74c3c"/>
+  <circle cx="80" cy="30" r="3" fill="#e74c3c"/>
+  <circle cx="55" cy="40" r="3" fill="#e74c3c"/>
+  <circle cx="55" cy="62" r="3" fill="#e74c3c"/>
+  <circle cx="35" cy="90" r="3" fill="#e74c3c"/>
+  <circle cx="72" cy="88" r="3" fill="#e74c3c"/>
+  <!-- YOLO detection box -->
+  <rect x="15" y="5" width="80" height="105" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+  <!-- Label -->
+  <rect x="100" y="10" width="55" height="20" fill="#e74c3c" rx="4"/>
+  <text x="127" y="24" text-anchor="middle" font-size="9" fill="white" font-family="Arial" font-weight="bold">YOLOv7</text>
+  <!-- Classification label -->
+  <rect x="100" y="42" width="55" height="30" fill="#c0392b" rx="4"/>
+  <text x="127" y="54" text-anchor="middle" font-size="8" fill="white" font-family="Arial">Activity</text>
+  <text x="127" y="66" text-anchor="middle" font-size="8" fill="white" font-family="Arial">Recog.</text>
+</svg>
