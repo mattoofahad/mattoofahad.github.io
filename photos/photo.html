@@ -1,11 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FM — Photo Gallery</title>
-  <link rel="shortcut icon" href="images_/favicon_io/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../images_/favicon_io/favicon.ico" type="image/x-icon">
+  <script src="../theme.js"></script>
   <style>
+    /* ── Theme Variables (synced with main site) ── */
+    :root,
+    [data-theme="dark"] {
+      --bg-primary: #0d0b1a;
+      --bg-secondary: #151228;
+      --bg-tertiary: #1e1a36;
+      --text-primary: #e8e4f0;
+      --text-secondary: #a89ec8;
+      --text-heading: #ffffff;
+      --accent-primary: #8b5cf6;
+      --accent-primary-hover: #a78bfa;
+      --accent-glow: rgba(139, 92, 246, 0.15);
+      --border-color: rgba(139, 92, 246, 0.2);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #faf8ff;
+      --bg-secondary: #f0ecfa;
+      --bg-tertiary: #e8e2f4;
+      --text-primary: #2d2640;
+      --text-secondary: #6b5f8a;
+      --text-heading: #1a1430;
+      --accent-primary: #7c3aed;
+      --accent-primary-hover: #6d28d9;
+      --accent-glow: rgba(124, 58, 237, 0.08);
+      --border-color: rgba(124, 58, 237, 0.15);
+      --card-shadow: 0 2px 16px rgba(124, 58, 237, 0.08);
+    }
+
+    /* ── Theme transition ── */
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
+      transition: background-color 0.3s ease, color 0.3s ease,
+                  border-color 0.3s ease, box-shadow 0.3s ease !important;
+    }
+
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -13,9 +53,35 @@
     }
 
     body {
-      background: #f4f4f2;
+      background: var(--bg-primary);
       font-family: 'Lato', Verdana, Helvetica, sans-serif;
-      color: #222;
+      color: var(--text-primary);
+    }
+
+    /* ── Theme Toggle ── */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 16px var(--accent-glow);
     }
 
     /* ── Header ── */
@@ -28,7 +94,8 @@
       font-size: 2.6rem;
       font-weight: 900;
       letter-spacing: 2px;
-      border-bottom: 3px solid #222;
+      color: var(--text-heading);
+      border-bottom: 3px solid var(--accent-primary);
       display: inline-block;
       padding-bottom: 10px;
     }
@@ -40,7 +107,7 @@
     /* ── Masonry Grid ── */
     .gallery {
       columns: 3 320px;
-      column-gap: 12px;
+      column-gap: 14px;
       padding: 0 20px 20px;
       max-width: 1400px;
       margin: 0 auto;
@@ -48,11 +115,14 @@
 
     .gallery-item {
       break-inside: avoid;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       cursor: pointer;
       overflow: hidden;
-      border-radius: 4px;
+      border-radius: 8px;
       position: relative;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-tertiary);
     }
 
     .gallery-item img {
@@ -60,6 +130,18 @@
       width: 100%;
       height: auto;
       transition: transform 0.3s ease, filter 0.3s ease;
+      content-visibility: auto;
+      contain-intrinsic-size: 320px 240px;
+    }
+
+    /* Fade-in on load */
+    .gallery-img {
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .gallery-img.loaded {
+      opacity: 1;
     }
 
     .gallery-item:hover img {
@@ -75,11 +157,11 @@
 
     .page-footer a {
       display: inline-block;
-      background: #222;
+      background: var(--accent-primary);
       color: #fff;
       text-decoration: none;
       padding: 12px 36px;
-      border-radius: 4px;
+      border-radius: 8px;
       font-weight: 700;
       letter-spacing: 3px;
       font-size: 1rem;
@@ -87,7 +169,7 @@
     }
 
     .page-footer a:hover {
-      background: #444;
+      background: var(--accent-primary-hover);
     }
 
     /* ── Lightbox ── */
@@ -106,7 +188,6 @@
       display: flex;
     }
 
-    /* Image wrapper — handles zoom via CSS transform */
     #lb-img-wrap {
       position: relative;
       max-width: 90vw;
@@ -127,7 +208,6 @@
       user-select: none;
     }
 
-    /* Counter label */
     #lb-counter {
       color: rgba(255,255,255,0.55);
       font-size: 0.85rem;
@@ -135,7 +215,6 @@
       margin-top: 10px;
     }
 
-    /* Controls bar */
     #lb-controls {
       display: flex;
       align-items: center;
@@ -144,7 +223,7 @@
     }
 
     .lb-btn {
-      background: rgba(255,255,255,0.12);
+      background: rgba(139, 92, 246, 0.2);
       border: none;
       color: #fff;
       font-size: 1.2rem;
@@ -160,16 +239,15 @@
     }
 
     .lb-btn:hover {
-      background: rgba(255,255,255,0.28);
+      background: rgba(139, 92, 246, 0.4);
     }
 
-    /* Prev / Next — positioned on the sides */
     #lb-prev,
     #lb-next {
       position: fixed;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255,255,255,0.10);
+      background: rgba(139, 92, 246, 0.15);
       border: none;
       color: #fff;
       font-size: 2rem;
@@ -190,10 +268,9 @@
 
     #lb-prev:hover,
     #lb-next:hover {
-      background: rgba(255,255,255,0.25);
+      background: rgba(139, 92, 246, 0.35);
     }
 
-    /* Close button */
     #lb-close {
       position: fixed;
       top: 16px;
@@ -211,7 +288,6 @@
 
     #lb-close:hover { opacity: 1; }
 
-    /* Zoom level badge */
     #lb-zoom-label {
       color: rgba(255,255,255,0.5);
       font-size: 0.8rem;
@@ -224,6 +300,7 @@
       .gallery { columns: 2 140px; }
       #lb-prev { left: 4px; }
       #lb-next { right: 4px; }
+      .theme-toggle { top: 12px; right: 12px; }
     }
 
     @media (max-width: 400px) {
@@ -232,6 +309,8 @@
   </style>
 </head>
 <body>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
 
   <header class="page-header">
     <h1>Photo <span>Gallery</span></h1>
@@ -266,11 +345,11 @@
   </div>
 
   <script>
-    // ── Image list (all photos from both original pages) ──────────────────────
-    const H = n => `images_/photos/horizontal/image (${n}).jpg`;
-    const V = n => `images_/photos/vertical/image (${n}).jpg`;
+    // ── Image list ──────────────────────────────────────────────────────────
+    var H = function(n) { return 'images_/photos/horizontal/image (' + n + ').jpg'; };
+    var V = function(n) { return 'images_/photos/vertical/image (' + n + ').jpg'; };
 
-    const images = [
+    var images = [
       // — original photo.html block 1 —
       H(1), H(2), H(3), V(1), H(4), V(2), V(3), V(4),
       // — original photo.html block 2 —
@@ -292,39 +371,77 @@
       V(57), V(58), H(33), V(59), V(60), H(34), V(61), V(62),
       V(63), V(64), H(35), V(65), V(66), H(36), V(67), V(68),
       V(70), V(32), V(33),
-      // — extras available in folder but not in original pages —
-      H(37), H(38), V(69),
+      // — extras —
+      H(37), H(38), V(69)
     ];
 
-    // ── Build grid ────────────────────────────────────────────────────────────
-    const gallery = document.getElementById('gallery');
+    // ── Build grid with lazy loading ────────────────────────────────────────
+    var gallery = document.getElementById('gallery');
 
-    images.forEach((src, idx) => {
-      const item = document.createElement('div');
+    images.forEach(function(src, idx) {
+      var item = document.createElement('div');
       item.className = 'gallery-item';
       item.dataset.index = idx;
 
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = `Photo ${idx + 1}`;
-      img.loading = 'lazy';
+      var img = document.createElement('img');
+      img.dataset.src = src;
+      img.alt = 'Photo ' + (idx + 1);
+      img.className = 'gallery-img';
+      img.style.minHeight = '180px';
 
       item.appendChild(img);
-      item.addEventListener('click', () => openLightbox(idx));
+      item.addEventListener('click', function() { openLightbox(idx); });
       gallery.appendChild(item);
     });
 
-    // ── Lightbox state ────────────────────────────────────────────────────────
-    const lb          = document.getElementById('lightbox');
-    const lbImg       = document.getElementById('lb-img');
-    const lbCounter   = document.getElementById('lb-counter');
-    const lbZoomLabel = document.getElementById('lb-zoom-label');
+    // ── IntersectionObserver lazy loading ────────────────────────────────────
+    if ('IntersectionObserver' in window) {
+      var lazyObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var img = entry.target;
+            img.src = img.dataset.src;
+            img.onload = function() {
+              img.style.minHeight = '';
+              img.classList.add('loaded');
+            };
+            lazyObserver.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '200px 0px',
+        threshold: 0.01
+      });
 
-    let currentIdx = 0;
-    let zoomLevel  = 1;
-    const ZOOM_STEP = 0.25;
-    const ZOOM_MIN  = 0.5;
-    const ZOOM_MAX  = 4;
+      document.querySelectorAll('.gallery-img').forEach(function(img) {
+        lazyObserver.observe(img);
+      });
+    } else {
+      // Fallback: load all immediately
+      document.querySelectorAll('.gallery-img').forEach(function(img) {
+        img.src = img.dataset.src;
+        img.classList.add('loaded');
+      });
+    }
+
+    // ── Lightbox state ──────────────────────────────────────────────────────
+    var lb          = document.getElementById('lightbox');
+    var lbImg       = document.getElementById('lb-img');
+    var lbCounter   = document.getElementById('lb-counter');
+    var lbZoomLabel = document.getElementById('lb-zoom-label');
+
+    var currentIdx = 0;
+    var zoomLevel  = 1;
+    var ZOOM_STEP = 0.25;
+    var ZOOM_MIN  = 0.5;
+    var ZOOM_MAX  = 4;
+
+    function preloadAdjacent() {
+      var prevIdx = (currentIdx - 1 + images.length) % images.length;
+      var nextIdx = (currentIdx + 1) % images.length;
+      new Image().src = images[prevIdx];
+      new Image().src = images[nextIdx];
+    }
 
     function openLightbox(idx) {
       currentIdx = idx;
@@ -341,8 +458,9 @@
 
     function updateLbImage() {
       lbImg.src = images[currentIdx];
-      lbCounter.textContent = `${currentIdx + 1} / ${images.length}`;
+      lbCounter.textContent = (currentIdx + 1) + ' / ' + images.length;
       applyZoom();
+      preloadAdjacent();
     }
 
     function navigate(delta) {
@@ -352,7 +470,7 @@
     }
 
     function applyZoom() {
-      lbImg.style.transform = `scale(${zoomLevel})`;
+      lbImg.style.transform = 'scale(' + zoomLevel + ')';
       lbZoomLabel.textContent = Math.round(zoomLevel * 100) + '%';
     }
 
@@ -360,26 +478,26 @@
     function zoomOut()   { zoomLevel = Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP); applyZoom(); }
     function zoomReset() { zoomLevel = 1; applyZoom(); }
 
-    // ── Button wiring ─────────────────────────────────────────────────────────
+    // ── Button wiring ───────────────────────────────────────────────────────
     document.getElementById('lb-close').addEventListener('click', closeLightbox);
-    document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
-    document.getElementById('lb-next').addEventListener('click', () => navigate(1));
+    document.getElementById('lb-prev').addEventListener('click', function() { navigate(-1); });
+    document.getElementById('lb-next').addEventListener('click', function() { navigate(1); });
     document.getElementById('lb-zoom-in').addEventListener('click', zoomIn);
     document.getElementById('lb-zoom-out').addEventListener('click', zoomOut);
     document.getElementById('lb-zoom-reset').addEventListener('click', zoomReset);
-    document.getElementById('lb-download').addEventListener('click', () => {
-      const src = images[currentIdx];
-      const a = document.createElement('a');
+    document.getElementById('lb-download').addEventListener('click', function() {
+      var src = images[currentIdx];
+      var a = document.createElement('a');
       a.href = src;
       a.download = src.split('/').pop();
       a.click();
     });
 
     // Click backdrop to close (but not the image)
-    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
 
-    // ── Keyboard ──────────────────────────────────────────────────────────────
-    document.addEventListener('keydown', e => {
+    // ── Keyboard ────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', function(e) {
       if (!lb.classList.contains('open')) return;
       switch (e.key) {
         case 'Escape':      closeLightbox();  break;
@@ -392,11 +510,11 @@
       }
     });
 
-    // ── Swipe support (touch) ─────────────────────────────────────────────────
-    let touchStartX = 0;
-    lb.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
-    lb.addEventListener('touchend',   e => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
+    // ── Swipe support (touch) ───────────────────────────────────────────────
+    var touchStartX = 0;
+    lb.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - touchStartX;
       if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
     });
   </script>
