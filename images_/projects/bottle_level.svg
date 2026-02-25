@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#f0faff" rx="8"/>
+  <!-- Bottle shape -->
+  <path d="M60,10 L60,30 Q45,40 45,55 L45,100 Q45,108 55,108 L85,108 Q95,108 95,100 L95,55 Q95,40 80,30 L80,10 Z"
+        fill="none" stroke="#3498db" stroke-width="2.5"/>
+  <!-- Bottle cap -->
+  <rect x="58" y="6" width="24" height="12" fill="#3498db" rx="3"/>
+  <!-- Water level fill (70% full) -->
+  <path d="M47,70 L47,100 Q47,106 55,106 L85,106 Q93,106 93,100 L93,70 Z"
+        fill="#3498db" opacity="0.4"/>
+  <!-- Level line -->
+  <line x1="42" y1="70" x2="98" y2="70" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,2"/>
+  <!-- Level indicator arrow -->
+  <line x1="100" y1="70" x2="130" y2="70" stroke="#e74c3c" stroke-width="1.5"/>
+  <!-- Level label -->
+  <rect x="115" y="60" width="40" height="20" fill="#e74c3c" rx="4"/>
+  <text x="135" y="74" text-anchor="middle" font-size="9" fill="white" font-family="Arial" font-weight="bold">70%</text>
+  <!-- Scale marks on bottle -->
+  <line x1="93" y1="80" x2="98" y2="80" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="93" y1="90" x2="98" y2="90" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="93" y1="70" x2="100" y2="70" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="93" y1="60" x2="98" y2="60" stroke="#3498db" stroke-width="1.5"/>
+  <!-- CV label -->
+  <rect x="10" y="10" width="35" height="20" fill="#2980b9" rx="4"/>
+  <text x="27" y="24" text-anchor="middle" font-size="8" fill="white" font-family="Arial" font-weight="bold">CV</text>
+</svg>

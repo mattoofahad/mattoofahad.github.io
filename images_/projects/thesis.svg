@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#f0f4ff" rx="8"/>
+  <!-- Document -->
+  <rect x="40" y="15" width="70" height="85" fill="#fff" stroke="#4a6cf7" stroke-width="2" rx="4"/>
+  <rect x="40" y="15" width="70" height="18" fill="#4a6cf7" rx="4"/>
+  <!-- Lines on document -->
+  <line x1="52" y1="48" x2="98" y2="48" stroke="#ccc" stroke-width="2"/>
+  <line x1="52" y1="58" x2="98" y2="58" stroke="#ccc" stroke-width="2"/>
+  <line x1="52" y1="68" x2="98" y2="68" stroke="#ccc" stroke-width="2"/>
+  <line x1="52" y1="78" x2="82" y2="78" stroke="#ccc" stroke-width="2"/>
+  <!-- Graduation cap -->
+  <polygon points="75,8 110,22 75,36 40,22" fill="#2c3e8c" stroke="#2c3e8c"/>
+  <rect x="107" y="22" width="3" height="16" fill="#2c3e8c"/>
+  <circle cx="108.5" cy="40" r="4" fill="#e74c3c"/>
+  <!-- Title text area (white on blue) -->
+  <text x="75" y="28" text-anchor="middle" font-size="8" fill="white" font-family="Arial">THESIS</text>
+</svg>
