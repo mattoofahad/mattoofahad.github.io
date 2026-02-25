@@ -259,6 +259,7 @@
       <span id="lb-zoom-label">100%</span>
       <button class="lb-btn" id="lb-zoom-in" aria-label="Zoom in">&#43;</button>
       <button class="lb-btn" id="lb-zoom-reset" aria-label="Reset zoom" title="Reset zoom">&#8634;</button>
+      <button class="lb-btn" id="lb-download" aria-label="Download image" title="Download">&#8595;</button>
     </div>
 
     <button id="lb-next" aria-label="Next image">&#8250;</button>
@@ -366,6 +367,13 @@
     document.getElementById('lb-zoom-in').addEventListener('click', zoomIn);
     document.getElementById('lb-zoom-out').addEventListener('click', zoomOut);
     document.getElementById('lb-zoom-reset').addEventListener('click', zoomReset);
+    document.getElementById('lb-download').addEventListener('click', () => {
+      const src = images[currentIdx];
+      const a = document.createElement('a');
+      a.href = src;
+      a.download = src.split('/').pop();
+      a.click();
+    });
 
     // Click backdrop to close (but not the image)
     lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
